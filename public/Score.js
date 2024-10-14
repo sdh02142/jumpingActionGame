@@ -1,9 +1,11 @@
 import { sendEvent } from './Socket.js';
+import scoredetails from './assets/stage.json' with { type: "json" }
+import itemdetails from './assets/item.json' with { type: "json" }
 
 class Score {
   score = 0;
   HIGH_SCORE_KEY = 'highScore';
-  stageChange = true;
+  stage = 0;
 
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
@@ -12,16 +14,25 @@ class Score {
   }
 
   update(deltaTime) {
-    this.score += deltaTime * 0.001;
+    this.score += deltaTime * 0.01 * scoredetails.data[this.stage].scorePerSecond;
     // 점수가 100점 이상이 될 시 서버에 메세지 전송
-    if (Math.floor(this.score) === 100 && this.stageChange) {
-      this.stageChange = false;
-      sendEvent(11, { currentStage: 1000, targetStage: 1001 });
+    if (Math.floor(this.score) >= scoredetails.data[this.stage].score) {
+      sendEvent(11, { currentStage: scoredetails.data[this.stage].id, targetStage: scoredetails.data[this.stage].id + 1 });
+      this.stage++;
+      console.log(this.stage);
     }
   }
 
-  getItem(itemId) {
-    this.score += 0;
+  getItem(itemScore) {
+    let realScore = 0;
+    if (itemScore > itemdetails.data[this.stage].score) {
+      realScore = itemdetails.data[this.stage].score;
+    } else {
+      realScore= itemScore;
+    }
+    console.log('현재 스테이지 아이템 점수' + itemdetails.data[this.stage].score);
+    console.log('실제' + realScore);
+    this.score += realScore;
   }
 
   reset() {

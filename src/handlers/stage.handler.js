@@ -6,6 +6,7 @@ import { getGameAssets } from '../init/assets.js';
 export const moveStageHandler = (userId, payload) => {
 
     let currentStages = getStage(userId);
+    console.log(userId);
     // 유저의 현재 스테이지 정보
     if (!currentStages.length) {
         return { status: 'fail', message: "No stages found for user" };
@@ -26,9 +27,9 @@ export const moveStageHandler = (userId, payload) => {
 
     // 1스테이지 -> 2스테이지로 넘어가는 가정
     // 5 => 임의로 정한 오차범위
-    if (elapsedTime < 100 || elapsedTime > 105) {
-        return { status: 'fail', message: "Invalid elapsed time" };
-    }
+    // if (elapsedTime < 100 || elapsedTime > 105) {
+    //     return { status: 'fail', message: "Invalid elapsed time" };
+    // }
 
     // targetStage에 대한 검증 <- 게임 에셋에 존재하는가?
     const { stages } = getGameAssets();

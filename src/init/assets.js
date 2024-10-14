@@ -6,7 +6,7 @@ let gameAssets = {};
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const basePath = path.join(__dirname, '../../assets')
+const basePath = path.join(__dirname, '../../public/assets')
 
 // 파일 읽는 함수
 // 비동기 병렬(여러 작업이 제각각의 처리시간이 소요되지만 가장 오래 걸리는 작업에 맞추어 모든 작업이 동시에 진행됨)로 파일을 읽음

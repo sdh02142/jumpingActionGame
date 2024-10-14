@@ -4,6 +4,7 @@ import CactiController from './CactiController.js';
 import Score from './Score.js';
 import ItemController from './ItemController.js';
 import { sendEvent } from './Socket.js';
+import itemDetails from './assets/item.json' with { type: "json" }
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -36,10 +37,12 @@ const CACTI_CONFIG = [
 
 // 아이템
 const ITEM_CONFIG = [
-  { width: 50 / 1.5, height: 50 / 1.5, id: 1, image: 'images/items/pokeball_red.png' },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 2, image: 'images/items/pokeball_yellow.png' },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 3, image: 'images/items/pokeball_purple.png' },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 4, image: 'images/items/pokeball_cyan.png' },
+  'images/items/pokeball_red.png',
+  'images/items/pokeball_yellow.png',
+  'images/items/pokeball_purple.png',
+  'images/items/pokeball_cyan.png',
+  'images/items/pokeball_orange.png',
+  'images/items/pokeball_pink.png',
 ];
 
 // 게임 요소들
@@ -91,14 +94,15 @@ function createSprites() {
 
   cactiController = new CactiController(ctx, cactiImages, scaleRatio, GROUND_SPEED);
 
-  const itemImages = ITEM_CONFIG.map((item) => {
+  const itemImages = itemDetails.data.map((item) => {
     const image = new Image();
-    image.src = item.image;
+    image.src = ITEM_CONFIG[Math.floor(Math.random() * 6)];
     return {
       image,
       id: item.id,
       width: item.width * scaleRatio,
       height: item.height * scaleRatio,
+      score: item.score,
     };
   });
 
@@ -217,8 +221,9 @@ function gameLoop(currentTime) {
     setupGameReset();
   }
   const collideWithItem = itemController.collideWith(player);
-  if (collideWithItem && collideWithItem.itemId) {
-    score.getItem(collideWithItem.itemId);
+  if (collideWithItem && collideWithItem.itemScore) {
+    score.getItem(collideWithItem.itemScore);
+    console.log('습득' + collideWithItem.itemScore);
   }
 
   // draw

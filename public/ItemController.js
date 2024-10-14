@@ -46,7 +46,8 @@ class ItemController {
             y,
             itemInfo.width,
             itemInfo.height,
-            itemInfo.image
+            itemInfo.image,
+            itemInfo.score
         );
 
         this.items.push(item);
@@ -77,7 +78,7 @@ class ItemController {
         if (collidedItem) {
             this.ctx.clearRect(collidedItem.x, collidedItem.y, collidedItem.width, collidedItem.height)
             return {
-                itemId: collidedItem.id
+                itemScore: collidedItem.score
             }
         }
     }
